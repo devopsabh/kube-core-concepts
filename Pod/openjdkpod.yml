@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: javapod
+  labels:
+    app: java-app
+spec: 
+  containers: 
+    - name: openjdk-cont
+      image: eclipse-temurin:21-jdk
+      ports: 
+        - containerPort: 8080
