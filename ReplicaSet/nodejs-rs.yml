@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nodejs-rs
+  labels:
+    app: nodejs-manager
+spec:
+  replicas: 3
+  selector:
+    matchLabels:  
+      app: nodejs-pod
+  template:
+    metadata:
+      labels: 
+        app: nodejs-pod
+    spec:
+      containers: 
+        - name: nodejs-cont
+          image: node  

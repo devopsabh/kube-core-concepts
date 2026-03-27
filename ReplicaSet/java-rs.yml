@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: java-rs
+  labels:
+    app: openjdk-manager
+spec: 
+  replicas: 3
+  selector: 
+    matchLabels: 
+      app: openjdk-pod
+  template:
+    metadata:
+      labels: 
+        app: openjdk-pod
+    spec:
+      containers:
+        - name: openjdk-cont
+          image: amazoncorretto:21 

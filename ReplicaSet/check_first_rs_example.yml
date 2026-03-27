@@ -1,0 +1,29 @@
+apiVersion: apps/v1        # WHAT: The API group for management objects. 
+                           # WHY: Basic Pods use 'v1', but managers like ReplicaSets need 'apps/v1'.
+
+kind: ReplicaSet           # WHAT: The type of resource.
+                           # WHY: Tells Kubernetes to ensure a specific number of Pods are running.
+
+metadata:
+  name: redis-rs           # WHAT: The name of this manager.
+  labels:                  # WHAT: Tags for the ReplicaSet itself.
+    app: redis-manager
+
+spec:                      # WHAT: The "Specification" (the rules for the manager).
+  replicas: 3              # WHAT: The target count. 
+                           # WHY: If a Pod crashes, the manager sees only 2 are left and starts a new one.
+
+  selector:                # WHAT: The "Search Filter".
+    matchLabels:           # WHAT: The specific tag the manager looks for.
+      app: redis-pod       # WHY: This MUST match the template label below so the manager can find its workers.
+
+  template:                # WHAT: The "Blueprint".
+    metadata:              # WHAT: The identity for NEW Pods.
+      labels:              # WHAT: The tags given to every Pod created by this manager.
+        app: redis-pod     # WHY: This is the tag the selector looks for.
+
+    spec:                  # WHAT: The "Body" of the Pod.
+      containers:          # WHAT: The list of images to run.
+      - name: redis-cont   # WHAT: A name for the container inside the Pod.
+        image: redis       # WHAT: The Docker image to pull and run.
+
