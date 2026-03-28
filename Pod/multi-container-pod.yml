@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: multi-container-pod
+  labels: 
+    app: multipodapp
+spec: 
+  restartPolicy: Never
+  containers:
+    - name: busybox-cont
+      image: busybox
+      command: ["/bin/sh", "-c", "sleep 3600"] 
+  
+    - name: alpine-cont
+      image: alpine 
+      command: ["/bin/sh", "-c", "sleep 3600"] 
+
