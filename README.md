@@ -30,3 +30,34 @@ kubectl apply -f <folder_name>/<file_name>.yml
 **## To check the status: **
 kubectl get pods
 kubectl get deployments
+
+# 🚀 Advanced Deployment Concepts
+
+## Rollouts & Updates
+Deployments allow you to update your app without downtime.
+
+* **Trigger a restart:** `kubectl rollout restart deployment/<name>`
+* **Update Image:** `kubectl set image deployment/<name> <container>=<new_image>`
+* **Check Status:** `kubectl rollout status deployment/<name>`
+* **Undo/Rollback:** `kubectl rollout undo deployment/<name>`
+
+---
+
+## Self-Healing (The "Why")
+When you set `replicas: 3`, the **ReplicaSet** (the babysitter) constantly checks if the *Actual State* matches your *Desired State*.
+
+> **Observation:** If you delete a Pod, Kubernetes automatically creates a new one.  
+> **Why?** Because the ReplicaSet controller’s only job is to ensure exactly 3 pods are running at all times.
+
+---
+
+## Understanding READY 1/1 vs READY 3/3
+* **In `kubectl get pods`:** `1/1` means 1 out of 1 container is healthy inside that specific Pod.
+* **In `kubectl get deploy`:** `3/3` means 3 out of 3 replicas (pods) are healthy across the cluster.
+
+---
+
+## Common Gotchas ⚠️
+* **Typos:** Ensure `labels` and `matchLabels` are spelled correctly; otherwise, the Deployment can't "find" its Pods.
+* **Container Exit:** Lightweight images like `busybox` will exit immediately unless you give them a task (e.g., `command: ["sh", "-c", "sleep 3600"]`).
+
